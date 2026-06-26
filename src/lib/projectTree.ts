@@ -40,6 +40,25 @@ function toNode(instance: BlockInstance, slot: BlockSlot): TreeNode {
 
 const byOrder = (a: BlockInstance, b: BlockInstance): number => a.order - b.order;
 
+export type GroupKey = 'ONCE_TOP' | 'ONCE_BOTTOM' | `SPLIT:${string}`;
+
+function firstPerSplitIndex(template: LayoutTemplate): number {
+  const idxs = template.slots.map((s, i) => (s.cardinality === 'PER_SPLIT' ? i : -1)).filter((i) => i >= 0);
+  return idxs.length ? Math.min(...idxs) : Infinity;
+}
+
+/**
+ * Identidade do grupo de uma instância — fronteira de reordenação (DND-1).
+ * PER_SPLIT pertence ao seu split; ONCE é topo ou fim conforme a posição do
+ * slot relativa ao primeiro slot PER_SPLIT. Mesma regra usada pela projeção.
+ */
+export function instanceGroupKey(instance: BlockInstance, template: LayoutTemplate): GroupKey {
+  const slot = template.slots.find((s) => s.id === instance.slotId);
+  if (slot?.cardinality === 'PER_SPLIT') return `SPLIT:${instance.splitId}`;
+  const idx = template.slots.findIndex((s) => s.id === instance.slotId);
+  return idx < firstPerSplitIndex(template) ? 'ONCE_TOP' : 'ONCE_BOTTOM';
+}
+
 /**
  * Projeta `QuotationDocument` + `LayoutTemplate` na árvore de grupos (TREE-1/2).
  * Pura: não muta `doc` nem `template` (PROJ-1). Os filtros de projeção

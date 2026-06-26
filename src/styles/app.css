@@ -52,6 +52,29 @@
 
 /* ----- Árvore ----- */
 .qs-tree { padding: 10px 8px; }
+.qs-tree__search {
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+  padding: 6px 8px;
+  font-size: 12px;
+  border: 1px solid #cbd2da;
+  border-radius: 6px;
+}
+.qs-tree__search:focus-visible { outline: 2px solid #2563eb; outline-offset: -1px; }
+.qs-grip {
+  border: none;
+  background: none;
+  color: #aab2bd;
+  cursor: grab;
+  font-size: 13px;
+  line-height: 1;
+  padding: 0 2px;
+  flex: 0 0 auto;
+  touch-action: none;
+}
+.qs-grip:active { cursor: grabbing; }
+.qs-grip--disabled { width: 13px; visibility: hidden; }
 .qs-treegroup { margin-bottom: 6px; }
 .qs-treegroup__header {
   font-size: 10px;

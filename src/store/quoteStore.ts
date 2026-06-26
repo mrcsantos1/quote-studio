@@ -2,6 +2,8 @@ import { createStore, type StoreApi } from 'zustand/vanilla';
 import { useStore } from 'zustand';
 import type { EditLock, Lang, QuotationDocument, UiState } from '@/types/contracts';
 import { quotationQ012345 } from '@/fixtures/quotation';
+import { layoutCompleto } from '@/fixtures/layoutCompleto';
+import { reorderBlocks } from '@/lib/reorder';
 
 export interface QuoteState {
   doc: QuotationDocument;
@@ -12,6 +14,9 @@ export interface QuoteState {
   select(instanceId: string): void;
   startEditing(instanceId: string): void;
   stopEditing(): void;
+
+  // Reordenação (DND-1/2)
+  reorder(activeId: string, overId: string): void;
 
   // Filtros de projeção (PROJ) e UI (PERS-1)
   setVisibleSplit(splitId: string | 'ALL'): void;
@@ -58,6 +63,12 @@ export function createQuoteStore(doc: QuotationDocument): StoreApi<QuoteState> {
       })),
 
     stopEditing: () => set({ lock: { mode: 'IDLE' } }),
+
+    reorder: (activeId, overId) =>
+      set((s) => {
+        const blocks = reorderBlocks(s.doc.blocks, layoutCompleto, activeId, overId);
+        return blocks === s.doc.blocks ? {} : { doc: { ...s.doc, blocks } };
+      }),
 
     setVisibleSplit: (visibleSplit) => set((s) => ({ doc: { ...s.doc, visibleSplit } })),
 

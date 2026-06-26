@@ -9,7 +9,8 @@ persistência em localStorage.
 
 ## Status
 
-Fase de **especificação concluída**. Implementação ainda não iniciada (greenfield).
+Especificação concluída. **M1 (Esqueleto)** e **M2 (Árvore viva)** implementados e verificados
+(46 testes verdes). Próximo: **M3 — Editor por bloco**.
 
 ## Especificação
 
@@ -24,6 +25,17 @@ A spec spec-driven está em [`specs/`](./specs/):
 Vite + React + TypeScript · Zustand · dnd-kit · Tiptap/ProseMirror · DOMPurify · Paged.js.
 Dependências mínimas, sem framework de UI pesado.
 
+## Desenvolvimento
+
+```bash
+pnpm install
+pnpm dev        # servidor de desenvolvimento
+pnpm test       # suíte Vitest
+pnpm typecheck  # checagem de tipos
+pnpm build      # build de produção
+```
+
 ## Próximo passo
 
-Executar **M1 — Esqueleto** (scaffold Vite + esqueleto), reconciliando com a spec.
+**M3 — Editor por bloco**: editor rico (Tiptap) na própria página, token como node atômico,
+flag `modified`, ações de recarregar/restaurar e persistência de conteúdo.

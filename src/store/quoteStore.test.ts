@@ -75,3 +75,22 @@ describe('filtros de projeção (PROJ-1)', () => {
     expect(s.doc.blocks).toEqual(before);
   });
 });
+
+describe('reordenação (DND-1/2)', () => {
+  const orderOf = (id: string) =>
+    store.getState().doc.blocks.find((b) => b.instanceId === id)!.order;
+
+  test('reorder troca a ordem das notas reordenáveis do split', () => {
+    const t0 = orderOf('technical--split-w22');
+    const c0 = orderOf('commercial--split-w22');
+    store.getState().reorder('technical--split-w22', 'commercial--split-w22');
+    expect(orderOf('technical--split-w22')).toBe(c0);
+    expect(orderOf('commercial--split-w22')).toBe(t0);
+  });
+
+  test('reorder de bloco read-only é no-op', () => {
+    const before = structuredClone(store.getState().doc.blocks);
+    store.getState().reorder('product--split-w22', 'technical--split-w22');
+    expect(store.getState().doc.blocks).toEqual(before);
+  });
+});
