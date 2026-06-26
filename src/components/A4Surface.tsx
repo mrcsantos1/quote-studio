@@ -3,7 +3,7 @@ import { useQuoteStore } from '@/store/quoteStore';
 import { projectTree } from '@/lib/projectTree';
 import { pageFormatToCssVars, type PageCssVars } from '@/lib/pageFormat';
 import { renderBlockHtml } from '@/lib/renderBlock';
-import { layoutCompleto } from '@/fixtures/layoutCompleto';
+import { activeLayout } from '@/lib/activeLayout';
 import { tokenCatalog } from '@/fixtures/tokenCatalog';
 import { BlockView } from './BlockView';
 
@@ -18,8 +18,8 @@ export function A4Surface() {
   const doc = useQuoteStore((s) => s.doc);
   const zoom = useQuoteStore((s) => s.ui.zoom);
 
-  const groups = useMemo(() => projectTree(doc, layoutCompleto), [doc]);
-  const pageVars = useMemo(() => pageFormatToCssVars(layoutCompleto.page), []);
+  const groups = useMemo(() => projectTree(doc, activeLayout), [doc]);
+  const pageVars = useMemo(() => pageFormatToCssVars(activeLayout.page), []);
 
   const header = doc.blocks.find((b) => b.slotId === 'header');
   const footer = doc.blocks.find((b) => b.slotId === 'footer');

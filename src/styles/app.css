@@ -31,6 +31,31 @@
   cursor: pointer;
 }
 .qs-visualizar:hover { background: #1d4ed8; }
+.qs-topbtn {
+  font-size: 13px;
+  border: 1px solid #4b5563;
+  background: #374151;
+  color: #f5f6f8;
+  border-radius: 6px;
+  padding: 7px 14px;
+  cursor: pointer;
+}
+.qs-topbtn:hover { background: #4b5563; }
+
+/* ----- Modal de edição de layout (SCHEMA) ----- */
+.qs-modal { position: fixed; inset: 0; z-index: 120; background: rgba(15, 23, 42, 0.55); display: flex; align-items: center; justify-content: center; padding: 24px; }
+.qs-modal__box { width: min(760px, 100%); max-height: 90vh; background: #fff; border-radius: 10px; display: flex; flex-direction: column; overflow: hidden; }
+.qs-modal__bar { display: flex; align-items: center; gap: 10px; padding: 10px 14px; background: #1f2933; color: #fff; }
+.qs-modal__spacer { flex: 1; }
+.qs-modal__hint { margin: 0; padding: 10px 14px; font-size: 12px; color: #54606d; background: #f5f6f8; }
+.qs-modal__hint code { background: #e2e5ea; padding: 0 3px; border-radius: 3px; }
+.qs-modal__textarea { flex: 1; min-height: 320px; margin: 0; border: none; border-top: 1px solid #e2e5ea; padding: 12px 14px; font-family: ui-monospace, "Cascadia Code", Consolas, monospace; font-size: 12px; line-height: 1.5; resize: vertical; outline: none; }
+.qs-modal__error { background: #fee2e2; color: #991b1b; padding: 8px 14px; font-size: 12px; white-space: pre-wrap; }
+.qs-modal__actions { display: flex; gap: 10px; padding: 12px 14px; border-top: 1px solid #e2e5ea; }
+.qs-modal__btn { font-size: 13px; border: 1px solid #cbd2da; background: #fff; color: #1f2933; border-radius: 6px; padding: 7px 14px; cursor: pointer; }
+.qs-modal__btn:hover { background: #f1f3f6; }
+.qs-modal__btn--primary { background: #2563eb; color: #fff; border-color: #2563eb; }
+.qs-modal__btn--primary:hover { background: #1d4ed8; }
 
 /* ----- Prévia de impressão (M4) ----- */
 .qs-preview { position: fixed; inset: 0; z-index: 100; background: #525659; display: flex; flex-direction: column; }

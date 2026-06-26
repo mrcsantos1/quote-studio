@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Previewer } from 'pagedjs';
 import { useQuoteStore } from '@/store/quoteStore';
-import { layoutCompleto } from '@/fixtures/layoutCompleto';
+import { activeLayout } from '@/lib/activeLayout';
 import { tokenCatalog } from '@/fixtures/tokenCatalog';
 import { buildPreviewHtml } from '@/preview/buildPreviewHtml';
 import { buildPagedStyles } from '@/preview/previewStyles';
@@ -38,9 +38,9 @@ export function Preview({ onClose }: { onClose: () => void }) {
     setTotal(null);
     setError(null);
 
-    const html = buildPreviewHtml(doc, layoutCompleto, tokenCatalog);
+    const html = buildPreviewHtml(doc, activeLayout, tokenCatalog);
     const cssUrl = URL.createObjectURL(
-      new Blob([buildPagedStyles(layoutCompleto.page)], { type: 'text/css' }),
+      new Blob([buildPagedStyles(activeLayout.page)], { type: 'text/css' }),
     );
 
     new Previewer()

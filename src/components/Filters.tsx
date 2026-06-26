@@ -1,6 +1,6 @@
 import type { Lang } from '@/types/contracts';
 import { useQuoteStore } from '@/store/quoteStore';
-import { layoutCompleto } from '@/fixtures/layoutCompleto';
+import { activeLayout } from '@/lib/activeLayout';
 
 // Filtros de projeção (PROJ-1/2/3) + escala de tela (FID-2). Nenhum muta blocks.
 export function Filters() {
@@ -24,8 +24,8 @@ export function Filters() {
 
       <label className="qs-field">
         <span>Layout</span>
-        <select value={layoutCompleto.id} disabled>
-          <option value={layoutCompleto.id}>{layoutCompleto.name}</option>
+        <select value={activeLayout.id} disabled>
+          <option value={activeLayout.id}>{activeLayout.name}</option>
         </select>
       </label>
 

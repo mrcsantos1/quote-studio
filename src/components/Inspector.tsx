@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useQuoteStore } from '@/store/quoteStore';
-import { layoutCompleto } from '@/fixtures/layoutCompleto';
+import { activeLayout } from '@/lib/activeLayout';
 import { absentOnceSlots, isRemovable, perSplitAddableSlots } from '@/lib/blocks';
 import { CompareView } from './CompareView';
 
-const slotById = new Map(layoutCompleto.slots.map((s) => [s.id, s]));
-const perSplitSlots = perSplitAddableSlots(layoutCompleto);
+const slotById = new Map(activeLayout.slots.map((s) => [s.id, s]));
+const perSplitSlots = perSplitAddableSlots(activeLayout);
 
 export function Inspector() {
   const selectedId = useQuoteStore((s) => s.ui.selectedInstanceId);
@@ -28,7 +28,7 @@ export function Inspector() {
   const removable = !!slot && isRemovable(slot);
   const splitId = instance?.splitId;
 
-  const absentOnce = absentOnceSlots(blocks, layoutCompleto);
+  const absentOnce = absentOnceSlots(blocks, activeLayout);
 
   const onReloadItem = (id: string) => { reloadItem(id); stopEditing(); };
   const onReloadAll = () => { reloadAll(); stopEditing(); };

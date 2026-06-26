@@ -2,10 +2,10 @@ import { useMemo } from 'react';
 import { useQuoteStore } from '@/store/quoteStore';
 import { renderBlockHtml } from '@/lib/renderBlock';
 import { tokenCatalog } from '@/fixtures/tokenCatalog';
-import { layoutCompleto } from '@/fixtures/layoutCompleto';
+import { activeLayout } from '@/lib/activeLayout';
 import { BlockEditor } from './BlockEditor';
 
-const slotById = new Map(layoutCompleto.slots.map((s) => [s.id, s]));
+const slotById = new Map(activeLayout.slots.map((s) => [s.id, s]));
 
 export function BlockView({ instanceId }: { instanceId: string }) {
   const instance = useQuoteStore((s) => s.doc.blocks.find((b) => b.instanceId === instanceId));

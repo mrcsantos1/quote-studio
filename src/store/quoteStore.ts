@@ -2,7 +2,7 @@ import { createStore, type StoreApi } from 'zustand/vanilla';
 import { useStore } from 'zustand';
 import type { EditLock, Lang, QuotationDocument, Snapshot, UiState } from '@/types/contracts';
 import { quotationQ012345 } from '@/fixtures/quotation';
-import { layoutCompleto } from '@/fixtures/layoutCompleto';
+import { activeLayout } from '@/lib/activeLayout';
 import { reorderBlocks } from '@/lib/reorder';
 import { restored, withContent } from '@/lib/blockEdits';
 import { isRemovable, makeBlockInstance } from '@/lib/blocks';
@@ -113,21 +113,21 @@ export function createQuoteStore(doc: QuotationDocument): StoreApi<QuoteState> {
     removeBlock: (instanceId) =>
       set((s) => {
         const b = s.doc.blocks.find((x) => x.instanceId === instanceId);
-        const slot = b && layoutCompleto.slots.find((x) => x.id === b.slotId);
+        const slot = b && activeLayout.slots.find((x) => x.id === b.slotId);
         if (!b || !slot || !isRemovable(slot)) return {};
         return { doc: { ...s.doc, blocks: s.doc.blocks.filter((x) => x.instanceId !== instanceId) } };
       }),
 
     addBlock: (slotId, splitId) =>
       set((s) => {
-        const slot = layoutCompleto.slots.find((x) => x.id === slotId);
+        const slot = activeLayout.slots.find((x) => x.id === slotId);
         if (!slot || !isRemovable(slot)) return {};
         // Slot ONCE só pode existir uma vez: se já presente, no-op.
         if (slot.cardinality === 'ONCE' && s.doc.blocks.some((b) => b.slotId === slotId)) return {};
         const peers =
           slot.cardinality === 'PER_SPLIT'
             ? s.doc.blocks.filter((b) => b.splitId === splitId)
-            : s.doc.blocks.filter((b) => layoutCompleto.slots.find((x) => x.id === b.slotId)?.cardinality === 'ONCE');
+            : s.doc.blocks.filter((b) => activeLayout.slots.find((x) => x.id === b.slotId)?.cardinality === 'ONCE');
         const order = (peers.length ? Math.max(...peers.map((b) => b.order)) : -1) + 1;
         const block = makeBlockInstance(slot, order, slot.cardinality === 'PER_SPLIT' ? splitId : undefined);
         return {
@@ -138,7 +138,7 @@ export function createQuoteStore(doc: QuotationDocument): StoreApi<QuoteState> {
 
     reorder: (activeId, overId) =>
       set((s) => {
-        const blocks = reorderBlocks(s.doc.blocks, layoutCompleto, activeId, overId);
+        const blocks = reorderBlocks(s.doc.blocks, activeLayout, activeId, overId);
         return blocks === s.doc.blocks ? {} : { doc: { ...s.doc, blocks } };
       }),
 

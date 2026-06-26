@@ -8,7 +8,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { projectTree, type TreeNode } from '@/lib/projectTree';
 import { filterTreeGroups } from '@/lib/filterTree';
 import { useQuoteStore } from '@/store/quoteStore';
-import { layoutCompleto } from '@/fixtures/layoutCompleto';
+import { activeLayout } from '@/lib/activeLayout';
 
 interface ItemFlags {
   selected: boolean;
@@ -115,7 +115,7 @@ export function Tree() {
   const reorder = useQuoteStore((s) => s.reorder);
 
   const groups = useMemo(
-    () => filterTreeGroups(projectTree(doc, layoutCompleto), treeQuery),
+    () => filterTreeGroups(projectTree(doc, activeLayout), treeQuery),
     [doc, treeQuery],
   );
   const modifiedById = useMemo(
