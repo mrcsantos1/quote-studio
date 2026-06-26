@@ -26,6 +26,12 @@ export function buildPagedStyles(page: PageFormat): string {
 .qs-print-doc { font-size: ${page.baseFontPt}pt; line-height: 1.45; color: #14181d; }
 .qs-print-block { margin-bottom: 10px; }
 .qs-print-block h1 { font-size: 1.7em; }
+/* Bloco em página cheia (BLK fullPage): página própria + altura útil */
+.qs-print-block--fullpage { break-after: page; min-height: 100%; display: flex; flex-direction: column; justify-content: center; }
+.qs-print-block img { max-width: 100%; }
+.qs-print-block table { border-collapse: collapse; width: 100%; }
+.qs-print-block th, .qs-print-block td { border: 1px solid #cbd2da; padding: 4px 6px; }
+.qs-print-block blockquote { border-left: 3px solid #2563eb; background: #f1f5ff; margin: 8px 0; padding: 6px 10px; }
 .qs-token { background: #eef2ff; border: 1px solid #c7d2fe; border-radius: 4px; padding: 0 4px; white-space: nowrap; }
 .pagedjs_page { position: relative; }
 /* Marca d'água (FID-7) */

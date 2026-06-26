@@ -28,13 +28,15 @@ export function buildPreviewHtml(
   const headerHtml = header ? renderBlockHtml(header, doc.activeLang, catalog) : '';
   const footerHtml = footer ? renderBlockHtml(footer, doc.activeLang, catalog) : '';
 
+  const slotById = new Map(template.slots.map((s) => [s.id, s]));
   const body = groups
     .flatMap((g) => g.nodes.filter((n) => !BAND_SLOTS.has(n.slotId)))
     .map((n) => {
       const inst = blockById.get(n.instanceId);
       if (!inst) return '';
       const inner = renderBlockHtml(inst, doc.activeLang, catalog);
-      return `<section class="qs-print-block" data-block-label="${escapeAttr(n.label)}">${inner}</section>`;
+      const fullPage = slotById.get(n.slotId)?.fullPage ? ' qs-print-block--fullpage' : '';
+      return `<section class="qs-print-block${fullPage}" data-block-label="${escapeAttr(n.label)}">${inner}</section>`;
     })
     .join('');
 

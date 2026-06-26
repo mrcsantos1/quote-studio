@@ -44,6 +44,10 @@ export interface BlockSlot {
   cardinality: Cardinality;
   editable: boolean;
   reorderable: boolean;
+  /** O bloco pode ser removido do documento e re-adicionado (BLK). */
+  removable: boolean;
+  /** O bloco ocupa a própria página inteira (ex.: capa). */
+  fullPage?: boolean;
   defaultSource: 'ENGINE' | 'OPTIONAL' | 'CUSTOM';
 }
 

@@ -224,6 +224,15 @@
   cursor: pointer;
 }
 .qs-block__body :first-child { margin-top: 0; }
+/* Bloco em página cheia (BLK fullPage): ocupa a altura útil da página (FID-3 separa do fluxo). */
+.qs-block--fullpage {
+  min-height: var(--qs-content-h);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-bottom: 1px dashed #cbd2da;
+  margin-bottom: 10px;
+}
 .qs-block[data-selected] { border-color: #93b4f5; background: #f5f9ff; }
 .qs-block[data-editing] { border-left-color: #2563eb; box-shadow: 0 0 0 1px #2563eb; background: #fff; }
 .qs-block[data-modified] { border-left-color: #f59e0b; }

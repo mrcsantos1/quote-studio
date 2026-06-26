@@ -31,7 +31,7 @@ export function BlockView({ instanceId }: { instanceId: string }) {
 
   return (
     <section
-      className={`qs-block qs-block--${slot?.type.toLowerCase() ?? 'generic'}`}
+      className={`qs-block qs-block--${slot?.type.toLowerCase() ?? 'generic'}${slot?.fullPage ? ' qs-block--fullpage' : ''}`}
       data-selected={isSelected || undefined}
       data-editing={isEditing || undefined}
       data-locked={isLocked || undefined}

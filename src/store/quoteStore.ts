@@ -5,7 +5,7 @@ import { quotationQ012345 } from '@/fixtures/quotation';
 import { layoutCompleto } from '@/fixtures/layoutCompleto';
 import { reorderBlocks } from '@/lib/reorder';
 import { restored, withContent } from '@/lib/blockEdits';
-import { canIncludeNote, isDeletableNote, makeNote } from '@/lib/notes';
+import { isRemovable, makeBlockInstance } from '@/lib/blocks';
 
 export interface QuoteState {
   doc: QuotationDocument;
@@ -25,8 +25,8 @@ export interface QuoteState {
   updateContent(instanceId: string, lang: Lang, html: string): void;
   reloadItem(instanceId: string): void;
   reloadAll(): void;
-  deleteNote(instanceId: string): void;
-  includeNote(splitId: string, slotId: string): void;
+  removeBlock(instanceId: string): void;
+  addBlock(slotId: string, splitId?: string): void;
 
   // Reordenação (DND-1/2)
   reorder(activeId: string, overId: string): void;
@@ -110,24 +110,29 @@ export function createQuoteStore(doc: QuotationDocument): StoreApi<QuoteState> {
         doc: { ...s.doc, blocks: s.doc.blocks.map((b) => restored(b)) },
       })),
 
-    deleteNote: (instanceId) =>
+    removeBlock: (instanceId) =>
       set((s) => {
         const b = s.doc.blocks.find((x) => x.instanceId === instanceId);
         const slot = b && layoutCompleto.slots.find((x) => x.id === b.slotId);
-        if (!b || !slot || !isDeletableNote(slot)) return {};
+        if (!b || !slot || !isRemovable(slot)) return {};
         return { doc: { ...s.doc, blocks: s.doc.blocks.filter((x) => x.instanceId !== instanceId) } };
       }),
 
-    includeNote: (splitId, slotId) =>
+    addBlock: (slotId, splitId) =>
       set((s) => {
         const slot = layoutCompleto.slots.find((x) => x.id === slotId);
-        if (!slot || !canIncludeNote(slot)) return {};
-        const orders = s.doc.blocks.filter((b) => b.splitId === splitId).map((b) => b.order);
-        const order = (orders.length ? Math.max(...orders) : -1) + 1;
-        const note = makeNote(slot, splitId, order);
+        if (!slot || !isRemovable(slot)) return {};
+        // Slot ONCE só pode existir uma vez: se já presente, no-op.
+        if (slot.cardinality === 'ONCE' && s.doc.blocks.some((b) => b.slotId === slotId)) return {};
+        const peers =
+          slot.cardinality === 'PER_SPLIT'
+            ? s.doc.blocks.filter((b) => b.splitId === splitId)
+            : s.doc.blocks.filter((b) => layoutCompleto.slots.find((x) => x.id === b.slotId)?.cardinality === 'ONCE');
+        const order = (peers.length ? Math.max(...peers.map((b) => b.order)) : -1) + 1;
+        const block = makeBlockInstance(slot, order, slot.cardinality === 'PER_SPLIT' ? splitId : undefined);
         return {
-          doc: { ...s.doc, blocks: [...s.doc.blocks, note] },
-          ui: { ...s.ui, selectedInstanceId: note.instanceId },
+          doc: { ...s.doc, blocks: [...s.doc.blocks, block] },
+          ui: { ...s.ui, selectedInstanceId: block.instanceId },
         };
       }),
 

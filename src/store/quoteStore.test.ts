@@ -125,25 +125,40 @@ describe('edição de conteúdo (EDIT-2/3)', () => {
   });
 });
 
-describe('notas: excluir/incluir (EDIT-3)', () => {
+describe('remover/adicionar blocos (BLK / EDIT-3)', () => {
   const count = () => store.getState().doc.blocks.length;
+  const has = (id: string) => store.getState().doc.blocks.some((b) => b.instanceId === id);
+  const hasSlot = (slotId: string) => store.getState().doc.blocks.some((b) => b.slotId === slotId);
 
-  test('deleteNote remove uma nota PER_SPLIT', () => {
+  test('removeBlock remove uma nota PER_SPLIT removível', () => {
     const n0 = count();
-    store.getState().deleteNote('technical--split-w22');
+    store.getState().removeBlock('technical--split-w22');
     expect(count()).toBe(n0 - 1);
-    expect(store.getState().doc.blocks.some((b) => b.instanceId === 'technical--split-w22')).toBe(false);
+    expect(has('technical--split-w22')).toBe(false);
   });
 
-  test('deleteNote em bloco não-nota (capa) é no-op', () => {
+  test('removeBlock remove um bloco ONCE chumbado mas removível (capa)', () => {
+    store.getState().removeBlock('cover');
+    expect(hasSlot('cover')).toBe(false);
+  });
+
+  test('removeBlock em bloco não-removível (PRODUCT) é no-op', () => {
     const before = structuredClone(store.getState().doc.blocks);
-    store.getState().deleteNote('cover');
+    store.getState().removeBlock('product--split-w22');
     expect(store.getState().doc.blocks).toEqual(before);
   });
 
-  test('includeNote adiciona nota nova ao split', () => {
+  test('addBlock re-adiciona um ONCE ausente (capa) só uma vez', () => {
+    store.getState().removeBlock('cover');
+    store.getState().addBlock('cover');
+    expect(store.getState().doc.blocks.filter((b) => b.slotId === 'cover')).toHaveLength(1);
+    store.getState().addBlock('cover'); // já presente → no-op
+    expect(store.getState().doc.blocks.filter((b) => b.slotId === 'cover')).toHaveLength(1);
+  });
+
+  test('addBlock adiciona nota PER_SPLIT nova ao split', () => {
     const n0 = count();
-    store.getState().includeNote('split-w22', 'technical');
+    store.getState().addBlock('technical', 'split-w22');
     expect(count()).toBe(n0 + 1);
     const added = store.getState().doc.blocks.at(-1)!;
     expect(added.slotId).toBe('technical');
