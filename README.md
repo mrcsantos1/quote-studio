@@ -9,8 +9,9 @@ persistência em localStorage.
 
 ## Status
 
-Especificação concluída. **M1 (Esqueleto)** e **M2 (Árvore viva)** implementados e verificados
-(46 testes verdes). Próximo: **M3 — Editor por bloco**.
+Protótipo **funcional ponta a ponta**: M1 (Esqueleto) · M2 (Árvore viva) · M3 (Editor por bloco)
+· M4 (Prévia/impressão) concluídos e verificados (81 testes verdes; typecheck/build limpos).
+O benchmark de editores está em [`specs/editor-benchmark.md`](./specs/editor-benchmark.md).
 
 ## Especificação
 
@@ -19,6 +20,7 @@ A spec spec-driven está em [`specs/`](./specs/):
 - [`requirements.md`](./specs/requirements.md) — visão, escopo e requisitos em formato EARS por capacidade.
 - [`design.md`](./specs/design.md) — arquitetura, contratos, máquina de estados do bloqueio, fidelidade/paginação, ADRs e riscos.
 - [`tasks.md`](./specs/tasks.md) — plano incremental M1→M4, rastreável aos requisitos, com Definition of Done.
+- [`editor-benchmark.md`](./specs/editor-benchmark.md) — comparação Froala × Tiptap × Lexical × CKEditor 5 × Slate × Quill.
 
 ## Stack (decidida — ver `design.md`)
 
@@ -35,7 +37,10 @@ pnpm typecheck  # checagem de tipos
 pnpm build      # build de produção
 ```
 
-## Próximo passo
+## Funcionalidades
 
-**M3 — Editor por bloco**: editor rico (Tiptap) na própria página, token como node atômico,
-flag `modified`, ações de recarregar/restaurar e persistência de conteúdo.
+- Árvore de estrutura projetada (ONCE/split), busca, reordenação por arrastar, navegação por teclado.
+- Edição WYSIWYG na própria página A4 (Tiptap), tokens como chips atômicos, bloqueio por bloco.
+- Recarregar/restaurar, incluir/excluir nota, flag de modificado, comparar trabalho × default, snapshot.
+- Prévia fiel com paginação real (Paged.js), "Página X de Y", marca d'água e impressão.
+- Tudo front-end: fixtures + localStorage, zero chamadas de rede.

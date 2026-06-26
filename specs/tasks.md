@@ -25,9 +25,10 @@
 ## M3 — Editor por bloco
 Executado em fatias granulares (decisão: começar pela camada de modelo testável, sem Tiptap):
 
-**Deliverable (preencher ao final do M3):**
-- ⬜ **D-BENCH** Benchmark de editores (Froala × Tiptap × Lexical × CKEditor 5 × Slate) concluindo
-  por que **Tiptap** é a melhor opção para esta aplicação. → [`editor-benchmark.md`](./editor-benchmark.md) · contexto em design.md ADR-1.
+**Deliverable:**
+- ✅ **D-BENCH** Benchmark de editores (Froala × Tiptap × Lexical × CKEditor 5 × Slate × Quill) com
+  scoring ponderado C1–C9 concluindo por **Tiptap** (decidido no round-trip de HTML). →
+  [`editor-benchmark.md`](./editor-benchmark.md) · contexto em design.md ADR-1.
 
 **Fatia B — modelo (TDD, sem Tiptap):** ✅ (commit a seguir)
 - ✅ **T3.3** Flag `modified` (trabalho≠default) calculada no modelo. → EDIT-2, VIS-1
@@ -81,7 +82,8 @@ Executado em fatias granulares (decisão: começar pela camada de modelo testáv
    coberto por ≥1 tarefa (matriz requisito↔tarefa fechada).
 2. **Implementação (sessões M1→M4):** cada milestone validado contra sua DoD; `projectTree` e `diff`
    cobertos por testes unitários; checagem manual no browser (zero rede, persistência, print).
-3. **Próximo passo:** preencher o deliverable **D-BENCH** (benchmark de editores) — única pendência.
+3. **Status:** M1–M4 + D-BENCH concluídos. Escopo D10 entregue. Pendências = decisões fora de
+   escopo (DP-1..DP-4) e limites honestos documentados (FID-6 multi-página, R1–R4).
 
 ---
 
