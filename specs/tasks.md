@@ -49,10 +49,13 @@ Executado em fatias granulares (decisão: começar pela camada de modelo testáv
   → REV-1/2 · *Nota:* snapshots não são persistidos (clones inteiros → risco de quota R2); a
   revisão incrementada sobrevive ao reload pela persistência do doc. Comparar entre revisões = DP-1 (fora).
 
-## M4 — Prévia/impressão
-- **T4.1** Integração Paged.js: paginação real, "Página X de Y", margin boxes, contador. → FID-5
-- **T4.2** Marca d'água de preview + `window.print()`. → FID-7
-- **T4.3** Sinalização de bloco dividido entre páginas N/N+1. → FID-6
+## M4 — Prévia/impressão ✅ (commit a seguir)
+- ✅ **T4.1** Paged.js: `buildPreviewHtml` (doc completo, ALL splits) + `buildPagedStyles`
+  (@page A4, header/footer correntes, "Página X de Y" via counter). → FID-5
+- ✅ **T4.2** Marca d'água "RASCUNHO" + `window.print()` (print CSS esconde o shell). → FID-7
+- ✅ **T4.3** `detectSplitBlocks`: blocos em >1 página → banner de aviso. → FID-6
+  - *Fixture cabe em 1 página; multi-página/divisão funciona por construção (counter(pages) +
+    detecção), demonstrável com conteúdo maior.*
 
 ---
 
@@ -78,8 +81,7 @@ Executado em fatias granulares (decisão: começar pela camada de modelo testáv
    coberto por ≥1 tarefa (matriz requisito↔tarefa fechada).
 2. **Implementação (sessões M1→M4):** cada milestone validado contra sua DoD; `projectTree` e `diff`
    cobertos por testes unitários; checagem manual no browser (zero rede, persistência, print).
-3. **Próximo passo:** **M4 — Prévia/impressão** (Paged.js, marca d'água, print, sinalização de
-   bloco dividido) e o deliverable **D-BENCH**.
+3. **Próximo passo:** preencher o deliverable **D-BENCH** (benchmark de editores) — única pendência.
 
 ---
 
@@ -90,5 +92,9 @@ Executado em fatias granulares (decisão: começar pela camada de modelo testáv
 - **2026-06-26** — M3 fatia B (modelo) concluída: `lib/blockEdits.ts` + actions de store
   (`updateContent`/`reloadItem`/`reloadAll`); 11 testes novos, 57 verdes.
 - **2026-06-26** — M3 COMPLETO: editor Tiptap por bloco + token atômico (`b7f63ce`); notas
-  excluir/incluir + persistência de conteúdo (`bace7fe`); Comparar (diff) + snapshot. 74 testes
-  verdes; verificado no browser (editar/modified/reload/incluir/excluir/persistir/comparar/snapshot).
+  excluir/incluir + persistência de conteúdo (`bace7fe`); Comparar (diff) + snapshot (`f31a841`).
+  74 testes verdes.
+- **2026-06-26** — M4 COMPLETO: Paged.js (paginação, header/footer correntes, "Página X de Y",
+  marca d'água, print, sinalização de divisão). 81 testes verdes; verificado no browser.
+  Toolchain: pnpm 11 exigiu `pnpm-workspace.yaml` (allowBuilds) p/ os scripts do pagedjs.
+  **Restam só o D-BENCH e o fechamento.**

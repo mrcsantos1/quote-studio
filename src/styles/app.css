@@ -19,6 +19,40 @@
   letter-spacing: 0.04em;
   font-weight: 600;
 }
+.qs-topbar__spacer { flex: 1; }
+.qs-visualizar {
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid #2563eb;
+  background: #2563eb;
+  color: #fff;
+  border-radius: 6px;
+  padding: 7px 16px;
+  cursor: pointer;
+}
+.qs-visualizar:hover { background: #1d4ed8; }
+
+/* ----- Prévia de impressão (M4) ----- */
+.qs-preview { position: fixed; inset: 0; z-index: 100; background: #525659; display: flex; flex-direction: column; }
+.qs-preview__bar { display: flex; align-items: center; gap: 14px; padding: 8px 16px; background: #1f2933; color: #f5f6f8; font-size: 13px; }
+.qs-preview__spacer { flex: 1; }
+.qs-preview__warn { color: #fbbf24; font-weight: 600; }
+.qs-preview__btn { font-size: 13px; border: 1px solid #4b5563; background: #374151; color: #fff; border-radius: 6px; padding: 6px 14px; cursor: pointer; }
+.qs-preview__btn:hover { background: #4b5563; }
+.qs-preview__btn:disabled { opacity: 0.5; cursor: default; }
+.qs-preview__splitnote { background: #fef3c7; color: #92400e; padding: 7px 16px; font-size: 12px; }
+.qs-preview__error { background: #fee2e2; color: #991b1b; padding: 7px 16px; font-size: 12px; }
+.qs-preview__pages { flex: 1; overflow: auto; padding: 24px; display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.qs-preview__pages .pagedjs_page { background: #fff; box-shadow: 0 3px 16px rgba(0, 0, 0, 0.35); }
+
+@media print {
+  body.qs-printing .qs-shell { display: none !important; }
+  body.qs-printing .qs-preview { position: static; background: #fff; }
+  body.qs-printing .qs-preview__bar,
+  body.qs-printing .qs-preview__splitnote,
+  body.qs-printing .qs-preview__error { display: none !important; }
+  body.qs-printing .qs-preview__pages { overflow: visible; padding: 0; gap: 0; }
+}
 .qs-zones {
   flex: 1 1 auto;
   display: grid;

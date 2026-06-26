@@ -1,0 +1,6 @@
+# core-js/es5-ext (via pagedjs) trazem postinstall de funding, dispensáveis.
+# Marcados como não-construídos (acknowledged) para o pnpm 11 não abortar o
+# dep-check antes de `pnpm test/build`.
+allowBuilds:
+  core-js: false
+  es5-ext: false
