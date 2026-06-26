@@ -94,3 +94,33 @@ describe('reordenação (DND-1/2)', () => {
     expect(store.getState().doc.blocks).toEqual(before);
   });
 });
+
+describe('edição de conteúdo (EDIT-2/3)', () => {
+  const block = (id: string) => store.getState().doc.blocks.find((b) => b.instanceId === id)!;
+
+  test('updateContent grava o texto e marca modified', () => {
+    store.getState().updateContent('intro', 'PT', '<p>editado</p>');
+    expect(block('intro').contentByLang.PT.html).toBe('<p>editado</p>');
+    expect(block('intro').modified).toBe(true);
+  });
+
+  test('updateContent não afeta outros blocos', () => {
+    store.getState().updateContent('intro', 'PT', '<p>editado</p>');
+    expect(block('closing').modified).toBe(false);
+  });
+
+  test('reloadItem restaura só o bloco alvo', () => {
+    store.getState().updateContent('intro', 'PT', '<p>a</p>');
+    store.getState().updateContent('closing', 'PT', '<p>b</p>');
+    store.getState().reloadItem('intro');
+    expect(block('intro').modified).toBe(false);
+    expect(block('closing').modified).toBe(true); // outro permanece modificado
+  });
+
+  test('reloadAll restaura todos os blocos', () => {
+    store.getState().updateContent('intro', 'PT', '<p>a</p>');
+    store.getState().updateContent('closing', 'PT', '<p>b</p>');
+    store.getState().reloadAll();
+    expect(store.getState().doc.blocks.every((b) => !b.modified)).toBe(true);
+  });
+});

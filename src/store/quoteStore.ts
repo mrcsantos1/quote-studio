@@ -4,6 +4,7 @@ import type { EditLock, Lang, QuotationDocument, UiState } from '@/types/contrac
 import { quotationQ012345 } from '@/fixtures/quotation';
 import { layoutCompleto } from '@/fixtures/layoutCompleto';
 import { reorderBlocks } from '@/lib/reorder';
+import { restored, withContent } from '@/lib/blockEdits';
 
 export interface QuoteState {
   doc: QuotationDocument;
@@ -14,6 +15,11 @@ export interface QuoteState {
   select(instanceId: string): void;
   startEditing(instanceId: string): void;
   stopEditing(): void;
+
+  // Edição de conteúdo (EDIT-2/3)
+  updateContent(instanceId: string, lang: Lang, html: string): void;
+  reloadItem(instanceId: string): void;
+  reloadAll(): void;
 
   // Reordenação (DND-1/2)
   reorder(activeId: string, overId: string): void;
@@ -63,6 +69,29 @@ export function createQuoteStore(doc: QuotationDocument): StoreApi<QuoteState> {
       })),
 
     stopEditing: () => set({ lock: { mode: 'IDLE' } }),
+
+    updateContent: (instanceId, lang, html) =>
+      set((s) => ({
+        doc: {
+          ...s.doc,
+          blocks: s.doc.blocks.map((b) =>
+            b.instanceId === instanceId ? withContent(b, lang, html) : b,
+          ),
+        },
+      })),
+
+    reloadItem: (instanceId) =>
+      set((s) => ({
+        doc: {
+          ...s.doc,
+          blocks: s.doc.blocks.map((b) => (b.instanceId === instanceId ? restored(b) : b)),
+        },
+      })),
+
+    reloadAll: () =>
+      set((s) => ({
+        doc: { ...s.doc, blocks: s.doc.blocks.map((b) => restored(b)) },
+      })),
 
     reorder: (activeId, overId) =>
       set((s) => {

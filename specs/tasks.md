@@ -29,10 +29,11 @@ Executado em fatias granulares (decisão: começar pela camada de modelo testáv
 - ⬜ **D-BENCH** Benchmark de editores (Froala × Tiptap × Lexical × CKEditor 5 × Slate) concluindo
   por que **Tiptap** é a melhor opção para esta aplicação. → [`editor-benchmark.md`](./editor-benchmark.md) · contexto em design.md ADR-1.
 
-**Fatia B — modelo (TDD, sem Tiptap):**
-- 🟡 **T3.3** Flag `modified` (trabalho≠default) + ações de modelo (recarregar/restaurar). → EDIT-2, VIS-1
-- 🟡 **T3.4a** `lib/blockEdits.ts`: `withContent` / `restored` / `isModified` (puros). → EDIT-2/3
-- ⬜ **T3.4b** Store: `updateContent` / `reloadItem` / `reloadAll`. → EDIT-3
+**Fatia B — modelo (TDD, sem Tiptap):** ✅ (commit a seguir)
+- ✅ **T3.3** Flag `modified` (trabalho≠default) calculada no modelo. → EDIT-2, VIS-1
+- ✅ **T3.4a** `lib/blockEdits.ts`: `withContent` / `restored` / `isModified` (puros, 7 testes). → EDIT-2/3
+- ✅ **T3.4b** Store: `updateContent` / `reloadItem` / `reloadAll` (4 testes). → EDIT-3
+  - *UI desses controles entra na fatia editor (modified só muda via edição real).*
 
 **Fatia editor (Tiptap):**
 - ⬜ **T3.1** Schema Tiptap: node `block` + node atômico `token` + NodeViews. → EDIT-1, TOK-3
@@ -72,11 +73,14 @@ Executado em fatias granulares (decisão: começar pela camada de modelo testáv
    coberto por ≥1 tarefa (matriz requisito↔tarefa fechada).
 2. **Implementação (sessões M1→M4):** cada milestone validado contra sua DoD; `projectTree` e `diff`
    cobertos por testes unitários; checagem manual no browser (zero rede, persistência, print).
-3. **Próximo passo:** executar **M3 fatia B** (modelo: flag `modified` + reload/restore via TDD).
+3. **Próximo passo:** **M3 fatia editor** (Tiptap: schema com node atômico `token`, NodeView do
+   bloco = área editável, toolbar manual, wiring de `updateContent`/reload na UI).
 
 ---
 
 ## Progresso
 - **2026-06-26** — M1 (`c82b5df`) e M2 (`ef997b0`) concluídos e pushed; 46 testes verdes,
-  typecheck/build limpos. Repo: github.com/mrcsantos1/quote-studio. Iniciando M3 fatia B.
+  typecheck/build limpos. Repo: github.com/mrcsantos1/quote-studio.
   Benchmark de editores (D-BENCH) registrado como deliverable a preencher no fim do M3.
+- **2026-06-26** — M3 fatia B (modelo) concluída: `lib/blockEdits.ts` + actions de store
+  (`updateContent`/`reloadItem`/`reloadAll`); 11 testes novos, 57 verdes. Falta a fatia editor.
