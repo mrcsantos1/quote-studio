@@ -1,6 +1,6 @@
 import { createStore, type StoreApi } from 'zustand/vanilla';
 import { useStore } from 'zustand';
-import type { EditLock, Lang, QuotationDocument, UiState } from '@/types/contracts';
+import type { EditLock, Lang, QuotationDocument, Snapshot, UiState } from '@/types/contracts';
 import { quotationQ012345 } from '@/fixtures/quotation';
 import { layoutCompleto } from '@/fixtures/layoutCompleto';
 import { reorderBlocks } from '@/lib/reorder';
@@ -11,6 +11,10 @@ export interface QuoteState {
   doc: QuotationDocument;
   lock: EditLock;
   ui: UiState;
+  snapshots: Snapshot[];
+
+  // Revisões (REV-1)
+  takeSnapshot(): void;
 
   // Navegação / bloqueio (LOCK-1..4)
   select(instanceId: string): void;
@@ -53,6 +57,16 @@ export function createQuoteStore(doc: QuotationDocument): StoreApi<QuoteState> {
     doc,
     lock: { mode: 'IDLE' },
     ui: initialUi(doc),
+    snapshots: [],
+
+    takeSnapshot: () =>
+      set((s) => ({
+        snapshots: [
+          ...s.snapshots,
+          { revision: s.doc.revision, takenAt: new Date().toISOString(), doc: structuredClone(s.doc) },
+        ],
+        doc: { ...s.doc, revision: s.doc.revision + 1 },
+      })),
 
     select: (instanceId) =>
       set((s) => ({

@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { useQuoteStore } from '@/store/quoteStore';
 import { layoutCompleto } from '@/fixtures/layoutCompleto';
 import { isDeletableNote } from '@/lib/notes';
+import { CompareView } from './CompareView';
 
 const slotById = new Map(layoutCompleto.slots.map((s) => [s.id, s]));
 // Slots de nota incluíveis (PER_SPLIT editáveis), p/ os botões "Incluir nota".
@@ -16,6 +18,10 @@ export function Inspector() {
   const reloadAll = useQuoteStore((s) => s.reloadAll);
   const deleteNote = useQuoteStore((s) => s.deleteNote);
   const includeNote = useQuoteStore((s) => s.includeNote);
+  const takeSnapshot = useQuoteStore((s) => s.takeSnapshot);
+  const revision = useQuoteStore((s) => s.doc.revision);
+  const snapshotCount = useQuoteStore((s) => s.snapshots.length);
+  const [comparing, setComparing] = useState(false);
 
   const slot = instance ? slotById.get(instance.slotId) : undefined;
   const isEditing = lock.mode === 'EDITING' && selectedId !== null && lock.instanceId === selectedId;
@@ -61,6 +67,16 @@ export function Inspector() {
               >
                 Recarregar item
               </button>
+              <button
+                type="button"
+                className="qs-inspector__action qs-inspector__action--ghost"
+                disabled={!instance.modified}
+                aria-pressed={comparing}
+                onClick={() => setComparing((v) => !v)}
+                title="Comparar o texto de trabalho com o default"
+              >
+                {comparing ? 'Ocultar comparação' : 'Comparar'}
+              </button>
               {isNote && (
                 <button
                   type="button"
@@ -73,6 +89,8 @@ export function Inspector() {
               )}
             </div>
           )}
+
+          {comparing && instance.modified && <CompareView instanceId={instance.instanceId} />}
 
           {splitId && (
             <div className="qs-inspector__include">
@@ -100,6 +118,18 @@ export function Inspector() {
       >
         Recarregar todos
       </button>
+
+      <div className="qs-inspector__revision">
+        <span>Revisão atual: <strong>{revision}</strong>{snapshotCount > 0 && ` · ${snapshotCount} snapshot(s)`}</span>
+        <button
+          type="button"
+          className="qs-inspector__action qs-inspector__action--ghost"
+          onClick={takeSnapshot}
+          title="Clonar o documento e iniciar nova revisão"
+        >
+          Snapshot de revisão
+        </button>
+      </div>
 
       <div className="qs-legend" aria-label="Legenda de estados">
         <h3>Estados</h3>

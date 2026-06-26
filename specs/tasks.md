@@ -43,9 +43,11 @@ Executado em fatias granulares (decisão: começar pela camada de modelo testáv
 - ✅ **T3.4-ui** Inspector: Recarregar item / Recarregar todos (travam p/ re-montar restaurado). → EDIT-3
 - ✅ **T3.4c** `lib/notes.ts` + store `deleteNote`/`includeNote`; UI no Inspector. → EDIT-3
 
-**Fatia persistência/comparar:**
+**Fatia persistência/comparar:** ✅ (commit a seguir)
 - ✅ **T3.5** Persistência de conteúdo (`qs:doc` + `schemaVersion`, hidrata no boot). → PERS-2/3, EDIT-5
-- ⬜ **T3.6** `lib/diff.ts` "Comparar" trabalho×default + snapshot de revisão. → REV-1/2
+- ✅ **T3.6** `lib/diff.ts` (LCS por palavra) "Comparar" trabalho×default + `takeSnapshot` (REV-1).
+  → REV-1/2 · *Nota:* snapshots não são persistidos (clones inteiros → risco de quota R2); a
+  revisão incrementada sobrevive ao reload pela persistência do doc. Comparar entre revisões = DP-1 (fora).
 
 ## M4 — Prévia/impressão
 - **T4.1** Integração Paged.js: paginação real, "Página X de Y", margin boxes, contador. → FID-5
@@ -76,8 +78,8 @@ Executado em fatias granulares (decisão: começar pela camada de modelo testáv
    coberto por ≥1 tarefa (matriz requisito↔tarefa fechada).
 2. **Implementação (sessões M1→M4):** cada milestone validado contra sua DoD; `projectTree` e `diff`
    cobertos por testes unitários; checagem manual no browser (zero rede, persistência, print).
-3. **Próximo passo:** **M3 fatia editor** (Tiptap: schema com node atômico `token`, NodeView do
-   bloco = área editável, toolbar manual, wiring de `updateContent`/reload na UI).
+3. **Próximo passo:** **M4 — Prévia/impressão** (Paged.js, marca d'água, print, sinalização de
+   bloco dividido) e o deliverable **D-BENCH**.
 
 ---
 
@@ -86,4 +88,7 @@ Executado em fatias granulares (decisão: começar pela camada de modelo testáv
   typecheck/build limpos. Repo: github.com/mrcsantos1/quote-studio.
   Benchmark de editores (D-BENCH) registrado como deliverable a preencher no fim do M3.
 - **2026-06-26** — M3 fatia B (modelo) concluída: `lib/blockEdits.ts` + actions de store
-  (`updateContent`/`reloadItem`/`reloadAll`); 11 testes novos, 57 verdes. Falta a fatia editor.
+  (`updateContent`/`reloadItem`/`reloadAll`); 11 testes novos, 57 verdes.
+- **2026-06-26** — M3 COMPLETO: editor Tiptap por bloco + token atômico (`b7f63ce`); notas
+  excluir/incluir + persistência de conteúdo (`bace7fe`); Comparar (diff) + snapshot. 74 testes
+  verdes; verificado no browser (editar/modified/reload/incluir/excluir/persistir/comparar/snapshot).

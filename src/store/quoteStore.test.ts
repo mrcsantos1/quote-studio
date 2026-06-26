@@ -151,3 +151,14 @@ describe('notas: excluir/incluir (EDIT-3)', () => {
     expect(added.origin).toBe('OPTIONAL');
   });
 });
+
+describe('snapshot de revisão (REV-1)', () => {
+  test('takeSnapshot guarda a revisão atual e incrementa', () => {
+    const r0 = store.getState().doc.revision;
+    store.getState().takeSnapshot();
+    const s = store.getState();
+    expect(s.snapshots).toHaveLength(1);
+    expect(s.snapshots[0].revision).toBe(r0);
+    expect(s.doc.revision).toBe(r0 + 1);
+  });
+});
