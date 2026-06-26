@@ -118,6 +118,8 @@ Função pura → testável com fixtures. A página A4 consome a mesma projeçã
   o bloco A4; token como node atômico serializável; modelo JSON ProseMirror habilita snapshot/diff
   sem recurso pago; licença MIT self-hostable. Custo: toolbar manual. **Plano B: Lexical** (MIT, headless).
   Versionação gerenciada da Tiptap Platform **não** usada.
+  → Benchmark completo (Froala × Tiptap × Lexical × CKEditor 5 × Slate) a preencher ao final do M3
+  em [`editor-benchmark.md`](./editor-benchmark.md) (deliverable D-BENCH).
 - **ADR-2 Estado: Zustand** — store leve + máquina de bloqueio; sem boilerplate de Redux.
 - **ADR-3 Reordenação: dnd-kit** (react-beautiful-dnd descontinuado).
 - **ADR-4 Paginação: Paged.js** só na prévia/impressão; mesmo Chromium do jsReport futuro.
