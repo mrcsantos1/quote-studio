@@ -1,7 +1,10 @@
 import { useQuoteStore } from '@/store/quoteStore';
 import { layoutCompleto } from '@/fixtures/layoutCompleto';
+import { isDeletableNote } from '@/lib/notes';
 
 const slotById = new Map(layoutCompleto.slots.map((s) => [s.id, s]));
+// Slots de nota incluíveis (PER_SPLIT editáveis), p/ os botões "Incluir nota".
+const noteSlots = layoutCompleto.slots.filter((s) => s.cardinality === 'PER_SPLIT' && s.editable);
 
 export function Inspector() {
   const selectedId = useQuoteStore((s) => s.ui.selectedInstanceId);
@@ -11,9 +14,13 @@ export function Inspector() {
   const stopEditing = useQuoteStore((s) => s.stopEditing);
   const reloadItem = useQuoteStore((s) => s.reloadItem);
   const reloadAll = useQuoteStore((s) => s.reloadAll);
+  const deleteNote = useQuoteStore((s) => s.deleteNote);
+  const includeNote = useQuoteStore((s) => s.includeNote);
 
   const slot = instance ? slotById.get(instance.slotId) : undefined;
   const isEditing = lock.mode === 'EDITING' && selectedId !== null && lock.instanceId === selectedId;
+  const isNote = !!slot && isDeletableNote(slot);
+  const splitId = instance?.splitId;
 
   // Recarregar/restaurar também trava: o editor Tiptap fixa o conteúdo na montagem,
   // então sair da edição faz a próxima montagem ler o texto já restaurado.
@@ -54,6 +61,32 @@ export function Inspector() {
               >
                 Recarregar item
               </button>
+              {isNote && (
+                <button
+                  type="button"
+                  className="qs-inspector__action qs-inspector__action--danger"
+                  onClick={() => { deleteNote(instance.instanceId); stopEditing(); }}
+                  title="Excluir esta nota"
+                >
+                  Excluir nota
+                </button>
+              )}
+            </div>
+          )}
+
+          {splitId && (
+            <div className="qs-inspector__include">
+              <h3>Incluir nota neste split</h3>
+              {noteSlots.map((ns) => (
+                <button
+                  key={ns.id}
+                  type="button"
+                  className="qs-inspector__action qs-inspector__action--ghost"
+                  onClick={() => includeNote(splitId, ns.id)}
+                >
+                  + {ns.label}
+                </button>
+              ))}
             </div>
           )}
         </>

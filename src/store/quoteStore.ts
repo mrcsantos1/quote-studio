@@ -5,6 +5,7 @@ import { quotationQ012345 } from '@/fixtures/quotation';
 import { layoutCompleto } from '@/fixtures/layoutCompleto';
 import { reorderBlocks } from '@/lib/reorder';
 import { restored, withContent } from '@/lib/blockEdits';
+import { canIncludeNote, isDeletableNote, makeNote } from '@/lib/notes';
 
 export interface QuoteState {
   doc: QuotationDocument;
@@ -20,6 +21,8 @@ export interface QuoteState {
   updateContent(instanceId: string, lang: Lang, html: string): void;
   reloadItem(instanceId: string): void;
   reloadAll(): void;
+  deleteNote(instanceId: string): void;
+  includeNote(splitId: string, slotId: string): void;
 
   // Reordenação (DND-1/2)
   reorder(activeId: string, overId: string): void;
@@ -92,6 +95,27 @@ export function createQuoteStore(doc: QuotationDocument): StoreApi<QuoteState> {
       set((s) => ({
         doc: { ...s.doc, blocks: s.doc.blocks.map((b) => restored(b)) },
       })),
+
+    deleteNote: (instanceId) =>
+      set((s) => {
+        const b = s.doc.blocks.find((x) => x.instanceId === instanceId);
+        const slot = b && layoutCompleto.slots.find((x) => x.id === b.slotId);
+        if (!b || !slot || !isDeletableNote(slot)) return {};
+        return { doc: { ...s.doc, blocks: s.doc.blocks.filter((x) => x.instanceId !== instanceId) } };
+      }),
+
+    includeNote: (splitId, slotId) =>
+      set((s) => {
+        const slot = layoutCompleto.slots.find((x) => x.id === slotId);
+        if (!slot || !canIncludeNote(slot)) return {};
+        const orders = s.doc.blocks.filter((b) => b.splitId === splitId).map((b) => b.order);
+        const order = (orders.length ? Math.max(...orders) : -1) + 1;
+        const note = makeNote(slot, splitId, order);
+        return {
+          doc: { ...s.doc, blocks: [...s.doc.blocks, note] },
+          ui: { ...s.ui, selectedInstanceId: note.instanceId },
+        };
+      }),
 
     reorder: (activeId, overId) =>
       set((s) => {

@@ -1,5 +1,8 @@
 import { beforeEach, describe, expect, test, vi } from 'vitest';
-import { attachUiPersistence, loadUi, saveUi, UI_STORAGE_KEY } from './persist';
+import {
+  attachDocPersistence, attachUiPersistence, DOC_STORAGE_KEY,
+  loadDoc, loadUi, saveDoc, saveUi, UI_STORAGE_KEY,
+} from './persist';
 import { createQuoteStore } from './quoteStore';
 import { quotationQ012345 } from '@/fixtures/quotation';
 import type { UiState } from '@/types/contracts';
@@ -51,6 +54,33 @@ describe('persistência de UI (PERS-1)', () => {
 
     store.getState().setZoom(2);
     expect(loadUi()?.zoom).toBe(2); // persistiu mudança
+
+    detach();
+  });
+});
+
+describe('persistência de conteúdo (PERS-2/3)', () => {
+  test('round-trip do documento', () => {
+    saveDoc(quotationQ012345);
+    expect(loadDoc()?.quotationId).toBe('Q-012345');
+  });
+
+  test('schemaVersion incompatível invalida o doc salvo (PERS-2)', () => {
+    localStorage.setItem(DOC_STORAGE_KEY, JSON.stringify({ schemaVersion: 999, doc: quotationQ012345 }));
+    expect(loadDoc()).toBeNull();
+  });
+
+  test('attachDocPersistence hidrata e persiste edições (PERS-3)', () => {
+    const seeded = structuredClone(quotationQ012345);
+    seeded.customer = 'Cliente Persistido';
+    saveDoc(seeded);
+
+    const store = createQuoteStore(structuredClone(quotationQ012345));
+    const detach = attachDocPersistence(store);
+    expect(store.getState().doc.customer).toBe('Cliente Persistido'); // hidratou
+
+    store.getState().updateContent('intro', 'PT', '<p>editado</p>');
+    expect(loadDoc()?.blocks.find((b) => b.instanceId === 'intro')?.modified).toBe(true);
 
     detach();
   });

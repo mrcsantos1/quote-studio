@@ -41,10 +41,10 @@ Executado em fatias granulares (decisão: começar pela camada de modelo testáv
 - ✅ **T3.2** Toolbar manual (B/I/S/listas/undo-redo via `useEditorState`); só o bloco em
   EDITING monta editor (= `setEditable` por instância). → EDIT-4, LOCK-2
 - ✅ **T3.4-ui** Inspector: Recarregar item / Recarregar todos (travam p/ re-montar restaurado). → EDIT-3
-- ⬜ **T3.4c** Ações Excluir nota / Incluir nota (PER_SPLIT). → EDIT-3
+- ✅ **T3.4c** `lib/notes.ts` + store `deleteNote`/`includeNote`; UI no Inspector. → EDIT-3
 
 **Fatia persistência/comparar:**
-- ⬜ **T3.5** Persistência de conteúdo + `schemaVersion` (invalida fixture velha). → PERS-2/3, EDIT-5
+- ✅ **T3.5** Persistência de conteúdo (`qs:doc` + `schemaVersion`, hidrata no boot). → PERS-2/3, EDIT-5
 - ⬜ **T3.6** `lib/diff.ts` "Comparar" trabalho×default + snapshot de revisão. → REV-1/2
 
 ## M4 — Prévia/impressão

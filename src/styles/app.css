@@ -268,8 +268,11 @@
   cursor: pointer;
 }
 .qs-inspector__action--ghost { background: #fff; color: #2563eb; }
+.qs-inspector__action--danger { background: #fff; color: #b91c1c; border-color: #b91c1c; }
 .qs-inspector__action:disabled { opacity: 0.45; cursor: default; }
 .qs-inspector__reloadall { margin-top: 14px; }
+.qs-inspector__include { margin-top: 14px; display: flex; flex-direction: column; gap: 6px; }
+.qs-inspector__include h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7480; margin: 0 0 2px; }
 .qs-legend { margin-top: 18px; border-top: 1px solid #e2e5ea; padding-top: 12px; }
 .qs-legend h3 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7480; margin: 0 0 8px; }
 .qs-legend ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; font-size: 12px; }

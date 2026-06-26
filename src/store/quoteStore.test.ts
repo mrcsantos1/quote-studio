@@ -124,3 +124,30 @@ describe('edição de conteúdo (EDIT-2/3)', () => {
     expect(store.getState().doc.blocks.every((b) => !b.modified)).toBe(true);
   });
 });
+
+describe('notas: excluir/incluir (EDIT-3)', () => {
+  const count = () => store.getState().doc.blocks.length;
+
+  test('deleteNote remove uma nota PER_SPLIT', () => {
+    const n0 = count();
+    store.getState().deleteNote('technical--split-w22');
+    expect(count()).toBe(n0 - 1);
+    expect(store.getState().doc.blocks.some((b) => b.instanceId === 'technical--split-w22')).toBe(false);
+  });
+
+  test('deleteNote em bloco não-nota (capa) é no-op', () => {
+    const before = structuredClone(store.getState().doc.blocks);
+    store.getState().deleteNote('cover');
+    expect(store.getState().doc.blocks).toEqual(before);
+  });
+
+  test('includeNote adiciona nota nova ao split', () => {
+    const n0 = count();
+    store.getState().includeNote('split-w22', 'technical');
+    expect(count()).toBe(n0 + 1);
+    const added = store.getState().doc.blocks.at(-1)!;
+    expect(added.slotId).toBe('technical');
+    expect(added.splitId).toBe('split-w22');
+    expect(added.origin).toBe('OPTIONAL');
+  });
+});
