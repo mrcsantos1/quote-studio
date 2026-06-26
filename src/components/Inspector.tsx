@@ -9,9 +9,16 @@ export function Inspector() {
   const lock = useQuoteStore((s) => s.lock);
   const startEditing = useQuoteStore((s) => s.startEditing);
   const stopEditing = useQuoteStore((s) => s.stopEditing);
+  const reloadItem = useQuoteStore((s) => s.reloadItem);
+  const reloadAll = useQuoteStore((s) => s.reloadAll);
 
   const slot = instance ? slotById.get(instance.slotId) : undefined;
   const isEditing = lock.mode === 'EDITING' && selectedId !== null && lock.instanceId === selectedId;
+
+  // Recarregar/restaurar também trava: o editor Tiptap fixa o conteúdo na montagem,
+  // então sair da edição faz a próxima montagem ler o texto já restaurado.
+  const onReloadItem = (id: string) => { reloadItem(id); stopEditing(); };
+  const onReloadAll = () => { reloadAll(); stopEditing(); };
 
   return (
     <aside className="qs-inspector" aria-label="Inspetor do bloco">
@@ -30,16 +37,36 @@ export function Inspector() {
           </dl>
 
           {slot.editable && (
-            <button
-              type="button"
-              className="qs-inspector__action"
-              onClick={() => (isEditing ? stopEditing() : startEditing(instance.instanceId))}
-            >
-              {isEditing ? 'Travar bloco' : 'Editar bloco'}
-            </button>
+            <div className="qs-inspector__actions">
+              <button
+                type="button"
+                className="qs-inspector__action"
+                onClick={() => (isEditing ? stopEditing() : startEditing(instance.instanceId))}
+              >
+                {isEditing ? 'Travar bloco' : 'Editar bloco'}
+              </button>
+              <button
+                type="button"
+                className="qs-inspector__action qs-inspector__action--ghost"
+                disabled={!instance.modified}
+                onClick={() => onReloadItem(instance.instanceId)}
+                title="Restaurar este bloco ao texto default"
+              >
+                Recarregar item
+              </button>
+            </div>
           )}
         </>
       )}
+
+      <button
+        type="button"
+        className="qs-inspector__action qs-inspector__action--ghost qs-inspector__reloadall"
+        onClick={onReloadAll}
+        title="Restaurar todos os blocos ao texto default"
+      >
+        Recarregar todos
+      </button>
 
       <div className="qs-legend" aria-label="Legenda de estados">
         <h3>Estados</h3>

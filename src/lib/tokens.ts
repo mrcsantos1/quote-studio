@@ -28,6 +28,27 @@ function escapeHtml(s: string): string {
  * Tokens desconhecidos não quebram a renderização — viram chip marcado.
  * O texto-valor (sample) é escapado para que o catálogo não vire vetor de injeção.
  */
+/**
+ * Storage → editor: troca {{token:S:k}} por `<span data-token="S:k">` vazio,
+ * que o node atômico `token` do Tiptap reconhece no parse (TOK-3).
+ */
+export function markersToSpans(html: string): string {
+  return html.replace(TOKEN_RE, (_full, source: string, key: string) =>
+    `<span data-token="${source}:${key}"></span>`);
+}
+
+/**
+ * Editor → storage: troca cada `<span data-token="S:k">…</span>` de volta para
+ * {{token:S:k}}, descartando o sample renderizado. Usa DOM para robustez.
+ */
+export function spansToMarkers(html: string): string {
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  doc.querySelectorAll('span[data-token]').forEach((el) => {
+    el.replaceWith(`{{token:${el.getAttribute('data-token')}}}`);
+  });
+  return doc.body.innerHTML;
+}
+
 export function expandTokens(html: string, catalog: TokenDef[]): string {
   const byKey = new Map(catalog.map((t) => [`${t.source}:${t.key}`, t]));
 

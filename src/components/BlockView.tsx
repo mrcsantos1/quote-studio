@@ -3,6 +3,7 @@ import { useQuoteStore } from '@/store/quoteStore';
 import { renderBlockHtml } from '@/lib/renderBlock';
 import { tokenCatalog } from '@/fixtures/tokenCatalog';
 import { layoutCompleto } from '@/fixtures/layoutCompleto';
+import { BlockEditor } from './BlockEditor';
 
 const slotById = new Map(layoutCompleto.slots.map((s) => [s.id, s]));
 
@@ -51,8 +52,12 @@ export function BlockView({ instanceId }: { instanceId: string }) {
         )}
         {!editable && <span className="qs-block__ro">somente leitura</span>}
       </header>
-      {/* Conteúdo já sanitizado (NFR-3) + tokens expandidos (TOK-4). Editor real entra no M3. */}
-      <div className="qs-block__body" dangerouslySetInnerHTML={{ __html: html }} />
+      {isEditing ? (
+        <BlockEditor instance={instance} lang={activeLang} />
+      ) : (
+        // Visualização: conteúdo sanitizado (NFR-3) + tokens expandidos como chips (TOK-2).
+        <div className="qs-block__body" dangerouslySetInnerHTML={{ __html: html }} />
+      )}
     </section>
   );
 }

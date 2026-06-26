@@ -35,9 +35,12 @@ Executado em fatias granulares (decisão: começar pela camada de modelo testáv
 - ✅ **T3.4b** Store: `updateContent` / `reloadItem` / `reloadAll` (4 testes). → EDIT-3
   - *UI desses controles entra na fatia editor (modified só muda via edição real).*
 
-**Fatia editor (Tiptap):**
-- ⬜ **T3.1** Schema Tiptap: node `block` + node atômico `token` + NodeViews. → EDIT-1, TOK-3
-- ⬜ **T3.2** Toolbar manual; `setEditable` por instância. → EDIT-4, LOCK-2
+**Fatia editor (Tiptap):** ✅ (commit a seguir)
+- ✅ **T3.1** Node atômico `token` (catálogo injetado, `atom:true`) + conversão storage↔editor
+  (`markersToSpans`/`spansToMarkers`); editor Tiptap por bloco em edição. → EDIT-1, TOK-3
+- ✅ **T3.2** Toolbar manual (B/I/S/listas/undo-redo via `useEditorState`); só o bloco em
+  EDITING monta editor (= `setEditable` por instância). → EDIT-4, LOCK-2
+- ✅ **T3.4-ui** Inspector: Recarregar item / Recarregar todos (travam p/ re-montar restaurado). → EDIT-3
 - ⬜ **T3.4c** Ações Excluir nota / Incluir nota (PER_SPLIT). → EDIT-3
 
 **Fatia persistência/comparar:**
