@@ -69,6 +69,16 @@ Executado em fatias granulares (decisão: começar pela camada de modelo testáv
   5 ações funcionam; conteúdo persiste com `schemaVersion`; Comparar (trabalho×default) e snapshot ok.
 - **M4:** Paged.js gera paginação exata + marca d'água + print; bloco transbordante é sinalizado.
 
+## Ajustes pós-M4 ✅ (4 entregas)
+- ✅ **A1** Blocos removíveis/`fullPage` por schema (BLK): `removable`/`fullPage` em `BlockSlot`;
+  `lib/blocks.ts` (isRemovable/makeBlockInstance/absentOnceSlots); store removeBlock/addBlock;
+  Inspector "Remover/Adicionar bloco". commit `adcf386`.
+- ✅ **A2** Mídia no editor (EDIT-6): Image (base64) + Table + "quadro" (blockquote); sanitize
+  estende allowlist; toolbar com imagem/tabela/quadro. commit `098a8c7`.
+- ✅ **A3** Inserir tags (TOK-6): `TokenPicker` na toolbar insere o node atômico. commit `098a8c7`.
+- ✅ **A4** Editor de schema em runtime (SCHEMA): `lib/activeLayout.ts` (qs:layout + validateLayout);
+  `LayoutEditor` modal (aplicar=persistir+reload+wipe; restaurar padrão); botão no topbar. commit `60b4afc`.
+
 ## Decisões pendentes (não resolvidas)
 - **DP-1:** Comparar **entre revisões** (Q3) — fora desta entrega; reavaliar quando snapshots forem usados.
 - **DP-2:** Conteúdo **EN real** (Q4) — placeholder agora; definir fixtures EN na fase de i18n.
@@ -99,4 +109,7 @@ Executado em fatias granulares (decisão: começar pela camada de modelo testáv
 - **2026-06-26** — M4 COMPLETO: Paged.js (paginação, header/footer correntes, "Página X de Y",
   marca d'água, print, sinalização de divisão). 81 testes verdes; verificado no browser.
   Toolchain: pnpm 11 exigiu `pnpm-workspace.yaml` (allowBuilds) p/ os scripts do pagedjs.
-  **Restam só o D-BENCH e o fechamento.**
+- **2026-06-26** — Ajustes pós-M4 (A1–A4): blocos removíveis/fullPage por schema (`adcf386`);
+  mídia + inserir tags (`098a8c7`); editor de layout em runtime (`60b4afc`). **97 testes verdes**;
+  cada item verificado no browser (remover/re-adicionar capa, imagem/tabela/quadro/tag persistem,
+  editar layout aplica após reload).

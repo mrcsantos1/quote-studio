@@ -109,7 +109,9 @@ Função pura → testável com fixtures. A página A4 consome a mesma projeçã
 - Catálogo estático `TokenDef[]` (TOK-5).
 
 ## 7. Segurança de HTML (NFR-3) — dois pisos
-1. **DOMPurify** (allowlist de tags/atributos) em toda colagem/importação.
+1. **DOMPurify** (allowlist de tags/atributos) em toda colagem/importação. A allowlist inclui
+   `img/figure/table/…` para EDIT-6, com `src` em `https:`/`data:image` (DOMPurify bloqueia
+   `javascript:`) e **sem** `style` inline (tabelas sem resize).
 2. **Schema do editor** (Tiptap/ProseMirror): só admite nodes definidos → markup perigoso não
    tem onde ser armazenado (segundo piso estrutural).
 
@@ -124,6 +126,13 @@ Função pura → testável com fixtures. A página A4 consome a mesma projeçã
 - **ADR-3 Reordenação: dnd-kit** (react-beautiful-dnd descontinuado).
 - **ADR-4 Paginação: Paged.js** só na prévia/impressão; mesmo Chromium do jsReport futuro.
 - **ADR-5 Persistência: localStorage** + `schemaVersion` (D7); simplicidade sobre robustez nesta fase.
+- **ADR-6 Imagens como base64** (EDIT-6): upload embute a imagem no HTML do bloco (sem backend/CDN —
+  NFR-1). Custo: incha o localStorage (R2). Alternativa futura: upload p/ storage externo + URL.
+- **ADR-7 Layout ativo via localStorage + reset por reload** (SCHEMA): `lib/activeLayout.ts` resolve
+  o layout do `qs:layout` (ou fixture) **1× no import**; editar exige `location.reload()` apagando
+  `qs:doc`/`qs:ui`. Evita tornar o layout reativo no store (8 imports trocados de fixture→activeLayout)
+  e mantém os slotIds estáveis. Limite: editar só propriedades de slots existentes; slots novos via
+  "Adicionar bloco" (BLK), geração de conteúdo default é DP-4.
 
 ## 9. Riscos/Observações
 - **R1:** fragmentação intra-bloco com precisão de pixel é inerentemente do Paged.js; mitigação =

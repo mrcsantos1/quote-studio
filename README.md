@@ -40,7 +40,10 @@ pnpm build      # build de produção
 ## Funcionalidades
 
 - Árvore de estrutura projetada (ONCE/split), busca, reordenação por arrastar, navegação por teclado.
-- Edição WYSIWYG na própria página A4 (Tiptap), tokens como chips atômicos, bloqueio por bloco.
+- Edição WYSIWYG na própria página A4 (Tiptap): texto rico, **imagens** (upload/URL), **tabelas**,
+  **quadros**; tokens como chips atômicos inseridos por um **picker**; bloqueio por bloco.
+- **Blocos customizáveis pelo schema**: remover/re-adicionar qualquer bloco (`removable`) e capa em
+  **página inteira** (`fullPage`); editor de **layout/schema em runtime**.
 - Recarregar/restaurar, incluir/excluir nota, flag de modificado, comparar trabalho × default, snapshot.
 - Prévia fiel com paginação real (Paged.js), "Página X de Y", marca d'água e impressão.
 - Tudo front-end: fixtures + localStorage, zero chamadas de rede.

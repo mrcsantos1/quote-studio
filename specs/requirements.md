@@ -136,3 +136,30 @@ Cada requisito tem ID e critérios de aceite verificáveis. Milestone-alvo entre
   paginação real só sob demanda (não a cada tecla). *Aceite:* digitar não dispara Paged.js.
 - **NFR-5** i18n estrutural: `contentByLang` já modelado; ponto de extensão p/ fallback do Commerce existe.
 - **NFR-6** Acessibilidade: teclado, foco visível, `aria` na árvore/controles, responsivo até telas estreitas.
+
+### Capacidade: Blocos por schema (BLK) — [Ajustes pós-M4]
+- **BLK-1** O SISTEMA DEVE expor por slot do schema as flags `removable` e `fullPage`. *Aceite:* o
+  layout controla quais blocos podem ser removidos e quais ocupam página própria.
+- **BLK-2** QUANDO `slot.removable` O SISTEMA DEVE permitir **remover** o bloco (inclusive ONCE
+  "chumbados" como capa/cabeçalho) e **re-adicioná-lo**. *Aceite:* remover a capa some; "Adicionar
+  bloco" a re-insere; um ONCE existe no máximo uma vez.
+- **BLK-3** QUANDO `slot.fullPage` O SISTEMA DEVE renderizar o bloco ocupando a página inteira (tela
+  com altura útil A4; prévia com `break-after: page`). *Aceite:* a capa fica em página própria na prévia.
+
+### Capacidade: Elementos visuais (EDIT-6) — [Ajustes pós-M4]
+- **EDIT-6** O SISTEMA DEVE permitir inserir **imagens** (upload→base64 e URL), **tabelas** e
+  **quadros** (blockquote estilizado) no editor. *Aceite:* cada elemento renderiza no editor e na
+  visualização estática, sobrevive ao sanitizador e persiste. Imagens base64 inflam o localStorage (R2).
+
+### Capacidade: Inserir tags (TOK-6) — [Ajustes pós-M4]
+- **TOK-6** O SISTEMA DEVE oferecer um **picker** na toolbar para inserir tokens do catálogo (sem
+  digitar `{{token:…}}` à mão), inserindo o node atômico no cursor. *Aceite:* escolher `MAESTRO:plant`
+  insere o chip; o storage guarda `{{token:MAESTRO:plant}}`.
+
+### Capacidade: Editar schema em runtime (SCHEMA) — [Ajustes pós-M4]
+- **SCHEMA-1** O SISTEMA DEVE permitir **editar o layout/schema em runtime** (JSON das propriedades
+  dos slots), com validação. *Aceite:* JSON inválido mostra erro e não aplica.
+- **SCHEMA-2** QUANDO o usuário aplica um layout O SISTEMA DEVE persisti-lo, **apagar o conteúdo/UI
+  em memória e recarregar**. *Aceite:* mudar `cover.fullPage` reflete após reload; "Restaurar padrão"
+  volta à fixture. *Limite:* editar apenas propriedades de slots existentes (ids estáveis); o motor de
+  geração de doc para slots novos é DP-4 (fora).
