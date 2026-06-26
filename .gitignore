@@ -11,6 +11,10 @@ dist-ssr/
 .vite/
 *.tsbuildinfo
 
+# Test / tooling artifacts
+.playwright-mcp/
+coverage/
+
 # Editor / OS
 .vscode/*
 !.vscode/extensions.json
