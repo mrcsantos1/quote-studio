@@ -293,6 +293,61 @@
 .qs-block__body table.product { border-collapse: collapse; }
 .qs-block__body table.product th { text-align: left; padding-right: 10px; color: #54606d; font-weight: 600; }
 
+/* ----- Mídia no conteúdo (EDIT-6): imagem, tabela, quadro ----- */
+.qs-block__body img,
+.qs-editor img { max-width: 100%; height: auto; border-radius: 3px; }
+.qs-editor img.ProseMirror-selectednode { outline: 2px solid #2563eb; }
+.qs-block__body table:not(.product),
+.qs-editor table { border-collapse: collapse; width: 100%; margin: 8px 0; }
+.qs-block__body table:not(.product) td,
+.qs-block__body table:not(.product) th,
+.qs-editor td,
+.qs-editor th { border: 1px solid #cbd2da; padding: 4px 6px; vertical-align: top; }
+.qs-editor th { background: #f1f3f6; }
+/* "Quadro" = blockquote estilizado (callout) */
+.qs-block__body blockquote,
+.qs-editor blockquote {
+  border-left: 3px solid #2563eb;
+  background: #f1f5ff;
+  margin: 8px 0;
+  padding: 6px 10px;
+  border-radius: 0 4px 4px 0;
+}
+
+/* ----- Token picker (TOK-6) ----- */
+.qs-tokpick { position: relative; display: inline-flex; }
+.qs-tokpick__btn { width: auto; padding: 0 8px; font-weight: 600; }
+.qs-tokpick__menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 10;
+  width: 260px;
+  max-height: 320px;
+  overflow: auto;
+  background: #fff;
+  border: 1px solid #cbd2da;
+  border-radius: 8px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  padding: 6px;
+}
+.qs-tokpick__source { font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7480; padding: 6px 6px 2px; }
+.qs-tokpick__item {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  border: none;
+  background: none;
+  text-align: left;
+  padding: 5px 6px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 12px;
+}
+.qs-tokpick__item:hover { background: #eef2ff; }
+.qs-tokpick__sample { color: #6b7480; white-space: nowrap; }
+
 /* ----- Inspetor ----- */
 .qs-inspector__title { font-size: 13px; text-transform: uppercase; letter-spacing: 0.05em; color: #6b7480; margin: 0 0 10px; }
 .qs-inspector__empty { font-size: 13px; color: #6b7480; }
