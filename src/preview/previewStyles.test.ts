@@ -16,7 +16,16 @@ describe('buildPagedStyles (FID-5/7)', () => {
     expect(css).toContain('counter(pages)');
   });
 
-  test('inclui marca d\'água', () => {
+  test('inclui marca d\'água por padrão (visualização)', () => {
     expect(css.toUpperCase()).toContain('RASCUNHO');
+  });
+
+  test('PDF-2: watermark:false omite a marca d\'água (download)', () => {
+    const noMark = buildPagedStyles(layoutCompleto.page, { watermark: false });
+    expect(noMark.toUpperCase()).not.toContain('RASCUNHO');
+    // sem watermark não há transform no conteúdo → texto selecionável no PDF
+    expect(noMark).not.toContain('pagedjs_pagebox::after');
+    // mantém o resto (contador/margens)
+    expect(noMark).toContain('counter(pages)');
   });
 });

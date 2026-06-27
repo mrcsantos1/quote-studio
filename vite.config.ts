@@ -12,6 +12,16 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url)),
     },
   },
+  server: {
+    // Proxy p/ o Gotenberg local (resolve CORS). Em prod, troca-se por um BFF.
+    proxy: {
+      '/gotenberg': {
+        target: process.env.GOTENBERG_URL ?? 'http://localhost:3000',
+        changeOrigin: true,
+        rewrite: (p) => p.replace(/^\/gotenberg/, ''),
+      },
+    },
+  },
   test: {
     globals: true,
     environment: 'node',

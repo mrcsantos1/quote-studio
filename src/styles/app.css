@@ -65,6 +65,9 @@
 .qs-preview__btn { font-size: 13px; border: 1px solid #4b5563; background: #374151; color: #fff; border-radius: 6px; padding: 6px 14px; cursor: pointer; }
 .qs-preview__btn:hover { background: #4b5563; }
 .qs-preview__btn:disabled { opacity: 0.5; cursor: default; }
+.qs-preview__btn--primary { background: #2563eb; border-color: #2563eb; }
+.qs-preview__btn--primary:hover { background: #1d4ed8; }
+.qs-preview__error code { background: rgba(0, 0, 0, 0.08); padding: 0 4px; border-radius: 3px; }
 .qs-preview__splitnote { background: #fef3c7; color: #92400e; padding: 7px 16px; font-size: 12px; }
 .qs-preview__error { background: #fee2e2; color: #991b1b; padding: 7px 16px; font-size: 12px; }
 .qs-preview__pages { flex: 1; overflow: auto; padding: 24px; display: flex; flex-direction: column; align-items: center; gap: 18px; }

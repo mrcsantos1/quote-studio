@@ -1,0 +1,9 @@
+# Gotenberg local p/ a geração de PDF (Chromium-as-a-service).
+# Subir:  docker compose up -d
+# O Vite faz proxy de /gotenberg → http://localhost:3000 (ver vite.config.ts).
+services:
+  gotenberg:
+    image: gotenberg/gotenberg:8
+    ports:
+      - '3000:3000'
+    restart: unless-stopped
