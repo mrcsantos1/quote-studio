@@ -21,6 +21,7 @@ A spec spec-driven está em [`specs/`](./specs/):
 - [`design.md`](./specs/design.md) — arquitetura, contratos, máquina de estados do bloqueio, fidelidade/paginação, ADRs e riscos.
 - [`tasks.md`](./specs/tasks.md) — plano incremental M1→M4, rastreável aos requisitos, com Definition of Done.
 - [`editor-benchmark.md`](./specs/editor-benchmark.md) — comparação Froala × Tiptap × Lexical × CKEditor 5 × Slate × Quill.
+- [`pdf-benchmark.md`](./specs/pdf-benchmark.md) — comparação Gotenberg × Puppeteer × jsReport × WeasyPrint × Prince × pdfmake.
 
 ## Stack (decidida — ver `design.md`)
 
@@ -36,6 +37,19 @@ pnpm test       # suíte Vitest
 pnpm typecheck  # checagem de tipos
 pnpm build      # build de produção
 ```
+
+### Geração de PDF (Gotenberg)
+
+O botão **"Baixar PDF"** (na prévia) gera o PDF no **Gotenberg** (Chromium) a partir do mesmo
+HTML/CSS da prévia — texto selecionável, sem marca d'água. Suba o serviço local:
+
+```bash
+docker compose up -d   # Gotenberg em http://localhost:3000 (proxy /gotenberg no Vite)
+```
+
+O app roda sem Docker; só o "Baixar PDF" precisa do Gotenberg (mostra erro amigável se off).
+Em produção, troque o proxy por um BFF (`VITE_GOTENBERG_URL`). Justificativa em
+[`specs/pdf-benchmark.md`](./specs/pdf-benchmark.md).
 
 ## Funcionalidades
 

@@ -163,3 +163,13 @@ Cada requisito tem ID e critérios de aceite verificáveis. Milestone-alvo entre
   em memória e recarregar**. *Aceite:* mudar `cover.fullPage` reflete após reload; "Restaurar padrão"
   volta à fixture. *Limite:* editar apenas propriedades de slots existentes (ids estáveis); o motor de
   geração de doc para slots novos é DP-4 (fora).
+
+### Capacidade: Geração de PDF (PDF) — [Pós-M4]
+- **PDF-1** QUANDO o usuário aciona **"Baixar PDF"** O SISTEMA DEVE gerar o PDF no **Gotenberg**
+  (Chromium) a partir do **mesmo HTML/CSS da prévia** (Paged.js embutido), produzindo texto vetorial
+  **selecionável**. *Aceite:* o download retorna `application/pdf`; paginação idêntica à prévia.
+  *Nota:* desvia do NFR-1 (zero-rede) **só** nesse fluxo — é o seam de produção (dev: proxy + Gotenberg
+  local; prod: BFF).
+- **PDF-2** O SISTEMA DEVE exibir a marca d'água "RASCUNHO" **apenas na visualização**; no download
+  ela some. *Aceite:* a prévia mostra RASCUNHO; o PDF baixado não tem watermark (e, sem o `transform`
+  da watermark, o texto fica selecionável).

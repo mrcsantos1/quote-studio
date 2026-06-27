@@ -133,6 +133,13 @@ Função pura → testável com fixtures. A página A4 consome a mesma projeçã
   `qs:doc`/`qs:ui`. Evita tornar o layout reativo no store (8 imports trocados de fixture→activeLayout)
   e mantém os slotIds estáveis. Limite: editar só propriedades de slots existentes; slots novos via
   "Adicionar bloco" (BLK), geração de conteúdo default é DP-4.
+- **ADR-8 PDF: Gotenberg (Chromium-as-a-service)** (PDF-1, substitui o jsReport do plano original).
+  **Mesmo motor do preview** → fidelidade pixel a pixel; **Paged.js roda dentro do Gotenberg** (mesma
+  paginação da prévia). Texto vetorial selecionável; OSS Apache-2 self-host. `lib/pdf.ts` faz POST
+  multipart (`/forms/chromium/convert/html`, `index.html` + `paged.polyfill.js`, `preferCssPageSize`,
+  `waitForExpression`). Justificativa completa em [`pdf-benchmark.md`](./pdf-benchmark.md). **Desvio
+  escopado de NFR-1:** só o "Baixar PDF" chama rede (dev: proxy `/gotenberg` + docker-compose; prod:
+  BFF). Marca d'água só na prévia (FID-7 atualizado): `buildPagedStyles({watermark})`.
 
 ## 9. Riscos/Observações
 - **R1:** fragmentação intra-bloco com precisão de pixel é inerentemente do Paged.js; mitigação =

@@ -79,6 +79,14 @@ Executado em fatias granulares (decisão: começar pela camada de modelo testáv
 - ✅ **A4** Editor de schema em runtime (SCHEMA): `lib/activeLayout.ts` (qs:layout + validateLayout);
   `LayoutEditor` modal (aplicar=persistir+reload+wipe; restaurar padrão); botão no topbar. commit `60b4afc`.
 
+## PDF — Gotenberg ✅ (PDF-1/2)
+- ✅ **PDF-D** Benchmark `pdf-benchmark.md` (Gotenberg vs Puppeteer/jsReport/WeasyPrint/Prince/pdfmake):
+  veredito Gotenberg (fidelidade + texto selecionável + operação pronta, OSS).
+- ✅ **PDF-1** `lib/pdf.ts` + `preview/buildPdfDocument.ts`: HTML standalone (Paged.js embutido) →
+  POST ao Gotenberg; "Baixar PDF" no Preview; proxy Vite + docker-compose. → PDF-1
+- ✅ **PDF-2** `buildPagedStyles({watermark})`: marca d'água só na prévia; download sem watermark
+  (texto selecionável). commit `0ea6aa0`.
+
 ## Decisões pendentes (não resolvidas)
 - **DP-1:** Comparar **entre revisões** (Q3) — fora desta entrega; reavaliar quando snapshots forem usados.
 - **DP-2:** Conteúdo **EN real** (Q4) — placeholder agora; definir fixtures EN na fase de i18n.
@@ -113,3 +121,7 @@ Executado em fatias granulares (decisão: começar pela camada de modelo testáv
   mídia + inserir tags (`098a8c7`); editor de layout em runtime (`60b4afc`). **97 testes verdes**;
   cada item verificado no browser (remover/re-adicionar capa, imagem/tabela/quadro/tag persistem,
   editar layout aplica após reload).
+- **2026-06-27** — PDF via Gotenberg (`0ea6aa0`): "Baixar PDF" gera no Chromium do Gotenberg a partir
+  da mesma prévia (Paged.js embutido), sem marca d'água (só na visualização) → texto selecionável.
+  **104 testes verdes**; verificado com docker-compose: PDF real `application/pdf` (~40 KB). Benchmark
+  em `pdf-benchmark.md`.
